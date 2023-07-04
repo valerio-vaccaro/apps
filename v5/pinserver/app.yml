@@ -21,7 +21,7 @@ metadata:
   developers: 
     Blockstream: https://blockstream.com
   website: https://blockstream.com
-  dependencies: []
+  permissions: []
   repo: 
     Public: https://github.com/Blockstream/blind_pin_server
   support: https://t.me/blockstream_jade
@@ -34,28 +34,28 @@ metadata:
   submitter: Valerio Vaccaro
 
 services:
-- name: node
-  image: tulipan81/blind_pin_server:v0.0.2@sha256:c3d32ac20594af9303de1971d014f39929a76efd4aa9717bedb77814117e1f98
-  depends_on:
-    - web
-  restart: on-failure
-  stop_grace_period: 1m
-  ports:
-    - 8096:8096
-  data:
-    - data/server_public_key.pub:/server_public_key.pub
-    - data/server_private_key.key:/server_private_key.key
-    - ata/pins:/pins
+  node:
+    image: tulipan81/blind_pin_server:v0.0.2@sha256:c3d32ac20594af9303de1971d014f39929a76efd4aa9717bedb77814117e1f98
+    depends_on:
+      - web
+    restart: on-failure
+    stop_grace_period: 1m
+    ports:
+      - 8096:8096
+    data:
+      - data/server_public_key.pub:/server_public_key.pub
+      - data/server_private_key.key:/server_private_key.key
+      - ata/pins:/pins
 
-- name: web
-  image: tulipan81/pinserver_web:v0.0.15@sha256:4cba37193f918e8fc91a124a222e05ca35630a31094ded18139d4bab128275b8
-  restart: on-failure
-  ports:
-    - 8081:8081
-  data:
-    - data/server_public_key.pub:/app/server_public_key.pub
-    - data/server_private_key.key:/app/server_private_key.key
-    - data/pins:/app/pins
-  environment:
-    PINSERVER_URL: ${APP_HIDDEN_SERVICE}
-    PINSERVER_PORT: "8096"
+  web:
+    image: tulipan81/pinserver_web:v0.0.15@sha256:4cba37193f918e8fc91a124a222e05ca35630a31094ded18139d4bab128275b8
+    restart: on-failure
+    ports:
+      - 8081:8081
+    data:
+      - data/server_public_key.pub:/app/server_public_key.pub
+      - data/server_private_key.key:/app/server_private_key.key
+      - data/pins:/app/pins
+    environment:
+      PINSERVER_URL: ${APP_HIDDEN_SERVICE}
+      PINSERVER_PORT: "8096"
