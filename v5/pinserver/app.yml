@@ -33,7 +33,7 @@ metadata:
   torOnly: true
   submitter: Valerio Vaccaro
 
-containers:
+services:
 - name: node
   image: tulipan81/blind_pin_server:v0.0.2@sha256:c3d32ac20594af9303de1971d014f39929a76efd4aa9717bedb77814117e1f98
   depends_on:
