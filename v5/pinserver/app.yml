@@ -1,36 +1,27 @@
 citadel_version: 4
-metadata:
-  manifestVersion: 1.1
-  id: pinserver
-  icon: https://svgshare.com/i/ta0.svg
-  category: bitcoin
-  name: Blind Oracle
-  version: "0.0.1"
-  tagline: Encrypt your wallet on Blockstream Jade
-  description: >-
-          Run a personal blind oracle to encrypt the wallet material on your 
-          Blockstream Jade.
 
-          Your blind oracle holds the decryption key to your Jade that is needed 
-          to unlock your device. This allows your Jade to remain protected from 
-          physical key extraction while also enforcing a maximum of 3 PIN attempts. 
-          Your blind oracle does not learn any sensitive information and does not 
-          know anything about the wallet on Jade.
-  releasesNotes: >-
-          First version
+metadata:
+  name: Blind Oracle
+  version: 0.0.1
+  category: bitcoin
+  tagline: Encrypt your wallet on Blockstream Jade
+  description: |
+    Run a personal blind oracle to encrypt the wallet material on your 
+    Blockstream Jade.
+
+    Your blind oracle holds the decryption key to your Jade that is needed 
+    to unlock your device. This allows your Jade to remain protected from 
+    physical key extraction while also enforcing a maximum of 3 PIN attempts. 
+    Your blind oracle does not learn any sensitive information and does not 
+    know anything about the wallet on Jade.
   developers: 
     Blockstream: https://blockstream.com
-  website: https://blockstream.com
   permissions: []
-  repo: 
-    Public: https://github.com/Blockstream/blind_pin_server
+  repo:
+    blind_pin_server: https://github.com/Blockstream/blind_pin_server
   support: https://t.me/blockstream_jade
-  port: 3344
   gallery:
     - https://i.imgur.com/u5H5E1w.jpeg
-  path: ''
-  deterministicPassword: false
-  torOnly: true
   submitter: Valerio Vaccaro
 
 services:
@@ -40,22 +31,25 @@ services:
       - web
     restart: on-failure
     stop_grace_period: 1m
-    ports:
-      - 8096:8096
-    data:
-      - data/server_public_key.pub:/server_public_key.pub
-      - data/server_private_key.key:/server_private_key.key
-      - ata/pins:/pins
-
+    required_ports:
+      tcp:
+        8096: 8096
+    hidden_services:
+      8096: 8096
+    mounts:
+      data:
+        data/server_public_key.pub: /app/server_public_key.pub
+        data/server_private_key.key: /app/server_private_key.key
+        data/pins: /app/pins
   web:
     image: tulipan81/pinserver_web:v0.0.15@sha256:4cba37193f918e8fc91a124a222e05ca35630a31094ded18139d4bab128275b8
     restart: on-failure
-    ports:
-      - 8081:8081
-    data:
-      - data/server_public_key.pub:/app/server_public_key.pub
-      - data/server_private_key.key:/app/server_private_key.key
-      - data/pins:/app/pins
+    port: 8081
+    mounts:
+      data:
+        data/server_public_key.pub: /app/server_public_key.pub
+        data/server_private_key.key: /app/server_private_key.key
+        data/pins: /app/pins
     environment:
       PINSERVER_URL: ${APP_HIDDEN_SERVICE}
       PINSERVER_PORT: "8096"
