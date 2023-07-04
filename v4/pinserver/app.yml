@@ -18,7 +18,8 @@ metadata:
           know anything about the wallet on Jade.
   releasesNotes: >-
           First version
-  developer: Blockstream
+  developers:
+    Blockstream: https://blockstream.com
   website: https://blockstream.com
   dependencies: []
   repo: 
