@@ -21,7 +21,8 @@ metadata:
   developer: Blockstream
   website: https://blockstream.com
   dependencies: []
-  repo: https://github.com/Blockstream/blind_pin_server
+  repo: 
+    Public: https://github.com/Blockstream/blind_pin_server
   support: https://t.me/blockstream_jade
   port: 3344
   gallery:
